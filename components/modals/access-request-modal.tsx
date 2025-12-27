@@ -144,7 +144,7 @@ export function AccessRequestModal({
                   id="project-name"
                   value={projectName}
                   onChange={(e) => setProjectName(e.target.value)}
-                  placeholder="e.g., Player Retention Analysis Q1"
+                  placeholder="e.g., Cross-Border Valuation Analysis Q1"
                 />
               </div>
               <div>

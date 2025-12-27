@@ -67,7 +67,7 @@ export function DataHero() {
             variant="outline" 
             size="sm" 
             className="h-8"
-            onClick={() => handleTrendingSearch("Player Retention")}
+            onClick={() => handleTrendingSearch("FX Exposure")}
           >
             <TrendingUp className="mr-1 h-3 w-3" />
             FX Exposure

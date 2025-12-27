@@ -418,10 +418,10 @@ export default function WorkbenchPage() {
                         </Button>
                       </div>
                     </div>
-                    <div className="bg-muted p-3 rounded-lg">
+                      <div className="bg-muted p-3 rounded-lg">
                       <p className="text-sm text-muted-foreground">
                         This collection contains {itemCount} data {itemCount === 1 ? 'product' : 'products'} 
-                        across {Object.keys(getGameStats().reduce((acc, [game]) => ({ ...acc, [game]: true }), {})).length} coverage areas.
+                        across {Object.keys(getGameStats().reduce((acc, [coverage]) => ({ ...acc, [coverage]: true }), {})).length} coverage areas.
                       </p>
                     </div>
                   </div>
@@ -661,16 +661,16 @@ export default function WorkbenchPage() {
               </CardContent>
             </Card>
 
-            {/* Game Breakdown */}
+            {/* Coverage Breakdown */}
             {gameStats.length > 0 && (
               <Card className="border-2">
                 <CardHeader>
-                  <CardTitle className="text-base">By Game</CardTitle>
+                  <CardTitle className="text-base">By Coverage</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {gameStats.map(([game, count]) => (
-                    <div key={game} className="flex items-center justify-between">
-                      <span className="text-sm truncate">{game}</span>
+                  {gameStats.map(([coverage, count]) => (
+                    <div key={coverage} className="flex items-center justify-between">
+                      <span className="text-sm truncate">{coverage}</span>
                       <Badge variant="outline">{count}</Badge>
                     </div>
                   ))}

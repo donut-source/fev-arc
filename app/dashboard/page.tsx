@@ -64,7 +64,7 @@ const userDataAssets = [
     title: "FX Spot + Forward Curves (G10) – Daily",
     type: "dataset",
     category: "FX Rates",
-    game: "Coverage: G10 FX",
+    coverage: "Coverage: G10 FX",
     accessLevel: "read",
     lastAccessed: "2024-01-14",
     trustScore: 95,
@@ -74,7 +74,7 @@ const userDataAssets = [
     title: "Company Intelligence – Private Market Profiles",
     type: "api",
     category: "Company Intelligence", 
-    game: "Entity: Private + Public Companies",
+    coverage: "Entity: Private + Public Companies",
     accessLevel: "read-write",
     lastAccessed: "2024-01-12",
     trustScore: 88,
@@ -84,7 +84,7 @@ const userDataAssets = [
     title: "Valuation Quality Checks (Model)",
     type: "model",
     category: "PE Valuation",
-    game: "Coverage: Transactions + Comps", 
+    coverage: "Coverage: Transactions + Comps", 
     accessLevel: "read",
     lastAccessed: "2024-01-08",
     trustScore: 92,
@@ -333,7 +333,7 @@ export default function DashboardPage() {
             <div>
               <h1 className="text-3xl font-bold tracking-tight">My Dashboard</h1>
               <p className="text-muted-foreground">
-                Your gaming data assets, collections, tools, and team
+                Your alternative data assets, collections, tools, and team
               </p>
             </div>
             <div className="flex items-center space-x-2">
@@ -500,7 +500,7 @@ export default function DashboardPage() {
                         </div>
                         <div>
                           <p className="text-sm font-medium">{asset.title}</p>
-                          <p className="text-xs text-muted-foreground">{asset.game}</p>
+                          <p className="text-xs text-muted-foreground">{asset.coverage}</p>
                         </div>
                       </div>
                       <div className="text-right">

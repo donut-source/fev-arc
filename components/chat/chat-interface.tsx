@@ -104,7 +104,7 @@ const SUGGESTED_PROMPTS = [
   },
   {
     icon: Building,
-    title: "Find by Studio",
+    title: "Find by Team",
     prompt: "What data products are published by ARC – Private Equity Analytics?",
   },
   {
