@@ -1,7 +1,20 @@
 import { neon } from '@neondatabase/serverless';
+import { shouldUseMockData } from './runtime-config';
 
-// Create Neon serverless connection
-const sql = neon(process.env.DATABASE_URL!);
+// Create Neon serverless connection lazily
+let sql: ReturnType<typeof neon> | null = null;
+
+function getSql() {
+  if (shouldUseMockData() || !process.env.DATABASE_URL) {
+    throw new Error('Database query requires a database connection');
+  }
+  
+  if (!sql) {
+    sql = neon(process.env.DATABASE_URL);
+  }
+  
+  return sql;
+}
 
 interface QueryPeopleParams {
   search?: string;
@@ -62,7 +75,7 @@ export async function queryPeople({
 
     if (search) {
       // Search by name, title, or bio in the people table (detailed profiles)
-      result = await sql`
+      result = await getSql()`
         SELECT id, name, title, department, expertise_areas, bio, email, slack_handle, 
                years_experience, specializations, contact_preference, availability_status
         FROM people
@@ -73,7 +86,7 @@ export async function queryPeople({
       `;
     } else if (expertise) {
       // Search by expertise areas
-      result = await sql`
+      result = await getSql()`
         SELECT id, name, title, department, expertise_areas, bio, email, slack_handle, 
                years_experience, specializations, contact_preference, availability_status
         FROM people
@@ -82,7 +95,7 @@ export async function queryPeople({
       `;
     } else if (department) {
       // Search by department
-      result = await sql`
+      result = await getSql()`
         SELECT id, name, title, department, expertise_areas, bio, email, slack_handle, 
                years_experience, specializations, contact_preference, availability_status
         FROM people
@@ -91,7 +104,7 @@ export async function queryPeople({
       `;
     } else {
       // Get all people
-      result = await sql`
+      result = await getSql()`
         SELECT id, name, title, department, expertise_areas, bio, email, slack_handle, 
                years_experience, specializations, contact_preference, availability_status
         FROM people
@@ -105,7 +118,7 @@ export async function queryPeople({
       console.log('No exact matches found, trying fuzzy matching for:', search);
       
       // Get all people for fuzzy matching
-      const allPeople = await sql`
+      const allPeople = await getSql()`
         SELECT id, name, title, department, expertise_areas, bio, email, slack_handle, 
                years_experience, specializations, contact_preference, availability_status
         FROM people

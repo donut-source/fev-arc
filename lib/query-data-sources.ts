@@ -1,7 +1,20 @@
 import { neon } from '@neondatabase/serverless';
+import { shouldUseMockData } from './runtime-config';
 
-// Create Neon serverless connection
-const sql = neon(process.env.DATABASE_URL!);
+// Create Neon serverless connection lazily
+let sql: ReturnType<typeof neon> | null = null;
+
+function getSql() {
+  if (shouldUseMockData() || !process.env.DATABASE_URL) {
+    throw new Error('Database query requires a database connection');
+  }
+  
+  if (!sql) {
+    sql = neon(process.env.DATABASE_URL);
+  }
+  
+  return sql;
+}
 
 interface QueryDataSourcesParams {
   search?: string;
@@ -64,7 +77,7 @@ export async function queryDataSources({
 
     if (search) {
       // Search by title, description, game name, or genre
-      result = await sql`
+      result = await getSql()`
         SELECT 
           ds.id, ds.title, ds.description, ds.type, ds.category,
           g.name as game_title, g.genre,
@@ -107,7 +120,7 @@ export async function queryDataSources({
 
       // Use template literals for Neon
       if (category && !type && !game) {
-        result = await sql`
+        result = await getSql()`
           SELECT 
             ds.id, ds.title, ds.description, ds.type, ds.category,
             g.name as game_title, g.genre,
@@ -122,7 +135,7 @@ export async function queryDataSources({
           ORDER BY ds.trust_score DESC, ds.title ASC
         `;
       } else if (type && !category && !game) {
-        result = await sql`
+        result = await getSql()`
           SELECT 
             ds.id, ds.title, ds.description, ds.type, ds.category,
             g.name as game_title, g.genre,
@@ -137,7 +150,7 @@ export async function queryDataSources({
           ORDER BY ds.trust_score DESC, ds.title ASC
         `;
       } else if (game && !category && !type) {
-        result = await sql`
+        result = await getSql()`
           SELECT 
             ds.id, ds.title, ds.description, ds.type, ds.category,
             g.name as game_title, g.genre,
@@ -153,7 +166,7 @@ export async function queryDataSources({
         `;
       } else {
         // Get all data sources
-        result = await sql`
+        result = await getSql()`
           SELECT 
             ds.id, ds.title, ds.description, ds.type, ds.category,
             g.name as game_title, g.genre,
@@ -175,7 +188,7 @@ export async function queryDataSources({
       console.log('No exact matches found for data sources, trying fuzzy matching for:', search);
       
       // Get all data sources for fuzzy matching
-      const allDataSources = await sql`
+      const allDataSources = await getSql()`
         SELECT 
           ds.id, ds.title, ds.description, ds.type, ds.category,
           g.name as game_title, g.genre,
