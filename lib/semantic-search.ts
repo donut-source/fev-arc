@@ -1,9 +1,22 @@
 import { neon } from '@neondatabase/serverless';
 import { embed, cosineSimilarity } from 'ai';
 import { openai } from '@ai-sdk/openai';
+import { shouldUseMockData } from './runtime-config';
 
-// Create Neon serverless connection
-const sql = neon(process.env.DATABASE_URL!);
+// Create Neon serverless connection lazily
+let sql: ReturnType<typeof neon> | null = null;
+
+function getSql() {
+  if (shouldUseMockData() || !process.env.DATABASE_URL) {
+    throw new Error('Semantic search requires a database connection');
+  }
+  
+  if (!sql) {
+    sql = neon(process.env.DATABASE_URL);
+  }
+  
+  return sql;
+}
 
 interface SearchResult {
   id: number;
@@ -49,9 +62,11 @@ export async function performSemanticSearch({
     // Execute SQL query with optional content type filtering
     let result;
     
+    const sqlClient = getSql();
+    
     if (content_types && content_types.length > 0) {
       console.log('Filtering by content types:', content_types);
-      result = await sql`
+      result = await sqlClient`
         SELECT 
           id,
           content_type,
@@ -65,7 +80,7 @@ export async function performSemanticSearch({
       `;
     } else {
       console.log('Getting all content embeddings');
-      result = await sql`
+      result = await sqlClient`
         SELECT 
           id,
           content_type,

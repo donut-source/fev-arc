@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { performSemanticSearch } from '@/lib/semantic-search';
+import { shouldUseMockData } from '@/lib/runtime-config';
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,6 +11,16 @@ export async function POST(request: NextRequest) {
         success: false,
         error: 'Query is required'
       }, { status: 400 });
+    }
+
+    // In mock mode, semantic search is not available
+    if (shouldUseMockData()) {
+      return NextResponse.json({
+        success: true,
+        results: [],
+        total_found: 0,
+        message: 'Semantic search is not available in mock data mode'
+      });
     }
 
     // Use the shared semantic search function
