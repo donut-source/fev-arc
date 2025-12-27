@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 66" fill="none">
+  <rect width="230" height="66" fill="#1a1a1a"/>
+  <line x1="35" y1="10" x2="35" y2="56" stroke="white" stroke-width="2"/>
+  <text x="60" y="35" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white">FEV</text>
+  <text x="60" y="50" font-family="Arial, sans-serif" font-size="11" fill="white" letter-spacing="2">ANALYTICS</text>
+  <!-- Particle effect simulation -->
+  <circle cx="10" cy="15" r="1" fill="white" opacity="0.8"/>
+  <circle cx="15" cy="20" r="0.8" fill="white" opacity="0.6"/>
+  <circle cx="8" cy="25" r="1.2" fill="white" opacity="0.7"/>
+  <circle cx="20" cy="18" r="0.9" fill="white" opacity="0.5"/>
+  <circle cx="12" cy="30" r="1.1" fill="white" opacity="0.9"/>
+  <circle cx="18" cy="28" r="0.7" fill="white" opacity="0.4"/>
+  <circle cx="25" cy="22" r="1" fill="white" opacity="0.8"/>
+  <circle cx="22" cy="35" r="0.8" fill="white" opacity="0.6"/>
+  <circle cx="14" cy="38" r="1.2" fill="white" opacity="0.7"/>
+  <circle cx="28" cy="30" r="0.9" fill="white" opacity="0.5"/>
+</svg>
+

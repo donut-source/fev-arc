@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Simplified 3-color system using Stone palette */
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
+    --primary: 20 14.3% 4.1%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+    
+    /* Muted colors for subtle elements */
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+    
+    /* Interactive elements */
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+    
+    /* Borders and inputs */
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 20 14.3% 4.1%;
+    
+    /* Cards and popovers */
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+    
+    /* Destructive (red for errors) */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    
+    /* Border radius */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --primary: 60 9.1% 97.8%;
+    --primary-foreground: 20 14.3% 4.1%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 24 5.7% 82.9%;
+    
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+  /* Custom scrollbar and chat animations */
+  @layer utilities {
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Smooth scrolling for chat */
+    .chat-scroll {
+      scroll-behavior: smooth;
+    }
+
+    /* Enhanced prose styling for AI responses */
+    .ai-message {
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    /* ChatGPT-style markdown formatting */
+    .prose {
+      color: hsl(var(--foreground));
+      max-width: none;
+    }
+
+    .prose h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      margin-top: 1.5rem;
+      color: hsl(var(--foreground));
+    }
+
+    .prose h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      margin-top: 1.25rem;
+      color: hsl(var(--foreground));
+    }
+
+    .prose h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+      color: hsl(var(--foreground));
+    }
+
+    .prose p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      color: hsl(var(--foreground));
+    }
+
+    .prose ul, .prose ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+
+    .prose ol {
+      list-style-type: decimal;
+      list-style-position: outside;
+    }
+
+    .prose li {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+      color: hsl(var(--foreground));
+      display: list-item;
+      list-style-position: outside;
+    }
+
+    .prose ol li {
+      padding-left: 0.25rem;
+    }
+
+    .prose strong {
+      font-weight: 600;
+      color: hsl(var(--foreground));
+    }
+
+    .prose em {
+      font-style: italic;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .prose code {
+      background-color: hsl(var(--muted));
+      padding: 0.125rem 0.25rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", monospace;
+    }
+
+    .prose blockquote {
+      border-left: 4px solid hsl(var(--primary));
+      padding-left: 1rem;
+      margin: 1rem 0;
+      font-style: italic;
+      color: hsl(var(--muted-foreground));
+    }
+
+    /* Tool call styling */
+    .tool-indicator {
+      background: linear-gradient(135deg, rgb(59 130 246 / 0.1) 0%, rgb(147 197 253 / 0.1) 100%);
+      border-left: 3px solid rgb(59 130 246);
+    }
+
+    /* ChatGPT-style input styling */
+    .chatgpt-input {
+      background: rgb(64 65 79);
+      border: 1px solid rgb(86 88 105);
+    }
+
+    .chatgpt-input:focus {
+      border-color: rgb(142 142 160);
+      box-shadow: 0 0 0 1px rgb(142 142 160);
+    }
+
+    /* Dark mode adjustments */
+    .dark .chatgpt-input {
+      background: rgb(64 65 79);
+      color: rgb(236 236 241);
+    }
+
+    /* Enhanced hover states and transitions */
+    .hover-lift {
+      transition: all 0.2s ease-in-out;
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Button enhancements */
+    .btn-enhanced {
+      transition: all 0.2s ease-in-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-enhanced:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-enhanced:active {
+      transform: translateY(0);
+    }
+
+    /* Card enhancements */
+    .card-enhanced {
+      transition: all 0.3s ease-in-out;
+      border: 1px solid hsl(var(--border));
+    }
+
+    .card-enhanced:hover {
+      border-color: hsl(var(--primary) / 0.3);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Select dropdown enhancements */
+    .select-enhanced {
+      background: hsl(var(--background));
+      border: 1px solid hsl(var(--border));
+      transition: all 0.2s ease-in-out;
+    }
+
+    .select-enhanced:hover {
+      border-color: hsl(var(--primary) / 0.5);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+  }
