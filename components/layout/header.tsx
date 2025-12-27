@@ -210,7 +210,7 @@ export function Header() {
             <DropdownMenuContent className="w-56 bg-white border border-border shadow-xl z-[100]" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">John Doe</p>
+                  <p className="text-sm font-medium leading-none">Warren Durrett</p>
                   <p className="text-xs leading-none text-muted-foreground">
                     PE Analyst • Alternative Data
                   </p>

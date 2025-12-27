@@ -256,7 +256,7 @@ export default function WorkbenchPage() {
       tags: collectionTags,
       items: items,
       createdAt: new Date().toISOString(),
-      owner: "John Doe", // Mock user
+      owner: "Warren Durrett", // Mock user
     };
 
     // Store in localStorage for now (in real app, this would be an API call)
@@ -302,7 +302,7 @@ export default function WorkbenchPage() {
       acc[item.gameTitle] = (acc[item.gameTitle] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
-    return Object.entries(stats).slice(0, 5); // Top 5 games
+    return Object.entries(stats).slice(0, 5); // Top 5 coverage areas
   };
 
   const hasWorkbenchItems = items.length > 0;
@@ -338,7 +338,7 @@ export default function WorkbenchPage() {
                   <DialogHeader>
                     <DialogTitle>Publish Collection</DialogTitle>
                     <DialogDescription>
-                      Make your curated data collection available to others in the marketplace.
+                      Make your curated data collection available to others in ARC.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">

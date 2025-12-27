@@ -1,7 +1,13 @@
 {
-  "name": "arc-catalog",
-  "version": "0.1.0",
+  "name": "fev-arc-catalog",
+  "version": "1.0.0",
   "private": true,
+  "description": "FEV's Alternatives AI Ready Catalog (ARC) - AI-powered data discovery for private equity",
+  "author": "Warren Durrett",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/donut-source/fev-arc.git"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",

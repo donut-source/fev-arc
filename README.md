@@ -2,49 +2,79 @@
 
 **Powered by [FEV Analytics](https://fevanalytics.com/)**
 
-A demo catalog of governed alternative-data products for private equity workflows: FX rates, company intelligence, valuation comps, and real estate signals.
-
-## Features
-
-- 🤖 **AI-Powered Data Discovery**: ChatGPT-like interface for natural language data queries (optional)
-- 📊 **Alternative Data Products**: Datasets, APIs, ML models, and warehouses for PE analysis
-- 🔍 **Smart Search**: Find data by game title, category, data owner, or technical stack
-- 🛠️ **Workbench**: Curate and organize data collections
-- 🤖 **OpenAI Integration**: Intelligent responses powered by GPT-4o-mini
-- 🗄️ **Neon Database**: PostgreSQL backend with real gaming data
-
-## Tech Stack
-
-- **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS
-- **AI**: OpenAI GPT-4o-mini, Vercel AI SDK 5
-- **Database**: Neon PostgreSQL with MCP integration
-- **UI**: shadcn/ui components
-- **Deployment**: Vercel
-
-## 🚀 Publishing Your App
-
-Want to deploy this app so others can access it online?
-
-**👉 See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment instructions!**
-
-We recommend **Vercel** (free & easiest) - takes ~5 minutes to deploy!
+A governed catalog of alternative-data products for private equity workflows: FX rates, company intelligence, PE valuation comps, and real estate demand signals.
 
 ---
 
-## Quick Start (Local Development)
+## 🎯 What is ARC?
 
-### Prerequisites
+ARC (Alternatives AI Ready Catalog) is a data discovery and governance platform purpose-built for **private equity firms** to:
+- **Discover** alternative data products (FX, company intel, valuations, real estate)
+- **Understand** data lineage, quality, and compliance
+- **Curate** collections for deal diligence and portfolio monitoring
+- **Export** to Power BI, Looker, Python, or FEV AI Space
 
-- Node.js 18+ and pnpm
-- (Optional) Neon PostgreSQL database
-- (Optional) OpenAI API key
+---
 
-### Setup
+## ✨ Key Features
+
+### 🤖 **FEV AI Assistant**
+ChatGPT-like interface for natural language data discovery:
+- "Do we have FX rate data for cross-border deal modeling?"
+- "Show me valuation comps for SaaS buyouts"
+- "What real estate demand signals do we have?"
+
+### 📊 **Alternative Data Catalog**
+Curated datasets, APIs, ML models for PE analysis:
+- **FX & Macro**: G10 spot/forward curves, hedging cost estimates
+- **Company Intelligence**: Private market profiles, competitive analysis
+- **PE Valuation**: Transaction comps, quality checks, industry benchmarks
+- **Real Estate**: NextDoor activity, WalkScore, neighborhood demand signals
+
+### 🔍 **Smart Discovery**
+Find data by:
+- Coverage area (G10 FX, SaaS companies, etc.)
+- Category (FX Rates, Valuation, Company Intel)
+- Data owner, steward, or team
+- Trust score, SLA, compliance requirements
+
+### 🛠️ **Workbench**
+Curate and share data collections:
+- Build diligence packs for IC memos
+- Create portfolio monitoring dashboards
+- Publish collections for team collaboration
+- Export to Power BI, Looker, Python, or FEV AI Space
+
+### 📈 **Insights & Analytics**
+Browse published PE-focused insights:
+- "UC Endowment's Connecticut RE Valuation (Dec 2025) + WalkScore"
+- "KKR SaaS Portfolio FX Hedging Analysis Q1 2025"
+- Cross-functional analytics for LP reporting
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | Next.js 15, React 19, TypeScript, Tailwind CSS |
+| **AI** | OpenAI GPT-4o-mini, Vercel AI SDK 5 |
+| **Database** | Neon PostgreSQL (with mock data fallback) |
+| **UI** | shadcn/ui components |
+| **Deployment** | Vercel |
+
+---
+
+## 🚀 Quick Start
+
+### Option 1: Demo Mode (No Database Required)
+
+Perfect for exploring the app with pre-loaded PE alternative data.
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
-   cd data-marketplace
+   git clone https://github.com/donut-source/fev-arc.git
+   cd fev-arc
    ```
 
 2. **Install dependencies**
@@ -57,22 +87,12 @@ We recommend **Vercel** (free & easiest) - takes ~5 minutes to deploy!
    cp env.example .env.local
    ```
    
-  Edit `.env.local` and add your actual values:
-  - `USE_MOCK_DATA`: Set to `true` to run the demo with in-repo mock data (recommended for local demos)
-  - `DATABASE_URL`: Your Neon PostgreSQL connection string (optional if `USE_MOCK_DATA=true`)
-  - `OPENAI_API_KEY`: Your OpenAI API key (optional; required only for AI chat when not in mock mode)
-   
-   **Getting your DATABASE_URL:**
-   1. Sign up at [Neon Console](https://console.neon.tech/)
-   2. Create a new project
-   3. Copy the connection string from your dashboard
-   4. It should look like: `postgresql://username:password@hostname/database?sslmode=require`
-   
-   **Getting your OPENAI_API_KEY:**
-   1. Sign up at [OpenAI Platform](https://platform.openai.com/)
-   2. Go to API Keys section
-   3. Create a new API key
-   4. Copy the key (starts with `sk-`)
+   Edit `.env.local`:
+   ```bash
+   USE_MOCK_DATA=true
+   # OPENAI_API_KEY=sk-... (optional for AI chat)
+   # DATABASE_URL=... (not needed in mock mode)
+   ```
 
 4. **Run the development server**
    ```bash
@@ -82,155 +102,193 @@ We recommend **Vercel** (free & easiest) - takes ~5 minutes to deploy!
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-### Database Setup (Optional)
+---
 
-This demo can run in **mock mode** (no database required). If you connect Neon, the project uses tables like:
-- `data_sources` - Alternative data products
-- `collections` - Curated collections for diligence and monitoring
-- `insights` - Dashboards and reports
-- `teams` / `people` - Publishers and experts
+### Option 2: Production Mode (with Database)
 
-The database schema (if used) includes sample private equity alternative-data content for demonstration purposes.
+For connecting to a real Neon PostgreSQL database.
 
-## Getting Started
-
-### Prerequisites
-
+**Prerequisites:**
 - Node.js 18+ and pnpm
-- OpenAI API key
-- Neon database (optional: Neon API key for remote MCP)
+- [Neon PostgreSQL account](https://console.neon.tech/) (free tier available)
+- [OpenAI API key](https://platform.openai.com/) (optional, for AI chat)
 
-### Development Setup
+**Setup:**
 
-1. **Clone and install dependencies:**
-```bash
-git clone <your-repo>
-cd data-marketplace
-pnpm install
-```
+1. **Get your Neon DATABASE_URL:**
+   - Sign up at [Neon Console](https://console.neon.tech/)
+   - Create a new project
+   - Copy the connection string: `postgresql://username:password@hostname/database?sslmode=require`
 
-2. **Environment Variables:**
-Create `.env.local` with:
-```bash
-# OpenAI Configuration (optional)
-OPENAI_API_KEY=your-openai-api-key-here
+2. **Get your OPENAI_API_KEY (optional):**
+   - Sign up at [OpenAI Platform](https://platform.openai.com/)
+   - Create a new API key (starts with `sk-`)
 
-# Neon Database Configuration (optional)  
-DATABASE_URL=postgresql://neondb_owner:your-password@your-endpoint.neon.tech/neondb?sslmode=require
+3. **Configure `.env.local`:**
+   ```bash
+   USE_MOCK_DATA=false
+   DATABASE_URL=postgresql://neondb_owner:password@host.neon.tech/neondb?sslmode=require
+   OPENAI_API_KEY=sk-...
+   ```
 
-# Demo mode (recommended for local)
-USE_MOCK_DATA=true
+4. **Run database migrations** (if needed):
+   ```bash
+   # Schema is in lib/db.ts
+   # Seed data examples in lib/mock-data.ts
+   ```
 
-# Optional: Neon MCP Configuration (for production deployment)
-NEON_API_KEY=your-neon-api-key-here
-USE_REMOTE_MCP=false
-```
+5. **Start the app:**
+   ```bash
+   pnpm dev
+   ```
 
-3. **Run development server:**
-```bash
-pnpm dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) to see the app.
+## 📦 Deploy to Production
 
-## Deployment on Vercel
+Want to share ARC with your team or LP investors?
 
-### Environment Variables for Production
+**👉 See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment instructions!**
 
-Add these environment variables in your Vercel dashboard:
+### Quick Deploy to Vercel (Recommended)
 
-```bash
-# Required
-OPENAI_API_KEY=your-openai-api-key-here
-DATABASE_URL=your-neon-database-url
+1. **Push your code to GitHub**
+2. **Connect to Vercel** at [vercel.com](https://vercel.com)
+3. **Set environment variables** in Vercel dashboard:
+   ```
+   USE_MOCK_DATA=true
+   ```
+4. **Deploy!** Takes ~2 minutes
 
-# Optional: For Remote MCP (recommended for production)
-NEON_API_KEY=your-neon-api-key-here
-USE_REMOTE_MCP=true
-```
+Your app will be live at `your-project.vercel.app` (or custom domain like `arc.fev.com`)
 
-### Remote MCP Integration
+---
 
-For production deployment, the app can use Neon's hosted MCP server instead of local API endpoints:
-
-- **Local Development**: Uses local API routes (`/api/data-sources`, `/api/categories`, `/api/collections`)
-- **Production**: Automatically switches to Neon's remote MCP server (`https://mcp.neon.tech/mcp`)
-
-This provides:
-- ✅ Better performance and reliability
-- ✅ Automatic updates and new features
-- ✅ No need to manage MCP server infrastructure
-- ✅ OAuth-based authentication (when available)
-
-### Deploy Steps
-
-1. **Connect to Vercel:**
-```bash
-npx vercel
-```
-
-2. **Set Environment Variables** in Vercel dashboard
-
-3. **Deploy:**
-```bash
-npx vercel --prod
-```
-
-## Project Structure
+## 📁 Project Structure
 
 ```
+fev-arc/
 ├── app/
-│   ├── api/          # API routes for data fetching
-│   ├── catalog/      # Data marketplace browse page
-│   ├── workbench/    # Data collection curation
-│   └── page.tsx      # ChatGPT-like homepage
+│   ├── api/               # API routes (data sources, collections, chat)
+│   ├── marketplace/       # Browse data catalog
+│   ├── workbench/         # Curate collections
+│   ├── insights/          # Published analytics
+│   ├── fev-ai-space/      # FEV AI Assistant interface
+│   └── page.tsx           # Homepage
 ├── components/
-│   ├── chat/         # Chat interface components
-│   ├── layout/       # Header and navigation
-│   └── ui/           # shadcn/ui components
-└── lib/              # Utilities and context
+│   ├── chat/              # FEV AI Assistant UI
+│   ├── layout/            # Header, navigation
+│   ├── home/              # Homepage sections
+│   └── ui/                # shadcn/ui components
+├── lib/
+│   ├── mock-data.ts       # Demo PE alternative data
+│   ├── runtime-config.ts  # Mock/prod mode switching
+│   ├── db.ts              # Database connection
+│   └── workbench-context.tsx  # Workbench state
+└── public/
+    ├── fev-logo.svg       # FEV Analytics logo
+    ├── fev-arc-logo.svg   # FEV ARC unified logo
+    └── fev-ai-assistant-logo.svg  # AI Assistant branding
 ```
 
-## Usage
+---
 
-### Chat Interface
+## 💡 Usage
 
-Ask natural language questions about your gaming data:
+### 1. **Browse the Catalog**
+   - Navigate to **Marketplace** → Browse all alternative data products
+   - Filter by: Coverage, Category, Trust Score, Team
+   - View detailed metadata: Owner, Steward, SLA, Tech Stack
 
-- "Show me player analytics for Battle Royale games"
-- "What revenue data is available?"
-- "Find ML models for churn prediction"
+### 2. **Chat with FEV AI Assistant**
+   - Click **FEV AI Space** in the navigation
+   - Ask natural language questions:
+     - "Find FX data for cross-border deals"
+     - "Show me company intelligence for SaaS"
+     - "Who owns the PE valuation comps?"
 
-### Browse & Search
+### 3. **Build Collections**
+   - Add data products to **My Workbench**
+   - Organize into thematic collections (e.g., "Cross-Border Diligence Pack")
+   - Publish collections for team sharing
 
-- Browse all data sources in the catalog
-- Filter by type, category, or status
-- Search across titles, descriptions, and metadata
+### 4. **Export Data**
+   - Export to **Power BI** for IC dashboards
+   - Connect to **Looker** for semantic modeling
+   - Use **Python** notebooks for custom analysis
+   - Open in **FEV AI Space** for AI-powered insights
 
-### Workbench
+### 5. **Explore Insights**
+   - Browse published analytics (e.g., "UC Endowment RE Valuation")
+   - View PE-focused use cases and case studies
+   - Filter by industry, strategy, or data type
 
-- Create curated data collections
-- Organize datasets for specific projects
-- Share collections with team members
+---
 
-## API Reference
+## 🔐 Security & Governance
+
+- **Trust Scores**: Data quality ratings (0-100%)
+- **Data Owners**: Clear accountability for each product
+- **Data Stewards**: Governance and access control
+- **SLA Tracking**: Uptime and freshness monitoring
+- **Access Levels**: Full, Read-only, Request-only
+- **Compliance**: GDPR, SOC2, alternative data regulations
+
+---
+
+## 🛠️ API Reference
 
 ### Data Sources API
-- `GET /api/data-sources` - Fetch data sources with filtering
-- `GET /api/categories` - Get data categories
-- `GET /api/collections` - Get curated collections
+```typescript
+GET /api/data-sources
+  ?category=FX Rates
+  &coverage=G10
+  &trust_score=80
+  &status=ready
+```
+
+### Collections API
+```typescript
+GET /api/collections
+GET /api/collections/:id
+```
 
 ### Chat API
-- `POST /api/chat` - AI-powered chat with tool calling
+```typescript
+POST /api/chat
+  body: { messages: [...] }
+```
 
-## Contributing
+### Insights API
+```typescript
+GET /api/insights
+GET /api/insights/:id
+```
+
+---
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test locally with `pnpm dev`
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+---
 
-MIT License - see LICENSE file for details.
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+## 🆘 Support
+
+- **Documentation**: See [DEPLOYMENT.md](./DEPLOYMENT.md)
+- **Issues**: [GitHub Issues](https://github.com/donut-source/fev-arc/issues)
+- **Website**: [fevanalytics.com](https://fevanalytics.com/)
+
+---
+
+**Built with ❤️ by [FEV Analytics](https://fevanalytics.com/)**

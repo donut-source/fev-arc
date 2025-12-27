@@ -79,7 +79,7 @@ export function TrustIndicators() {
             Built for Trust & Governance
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Every data product in our marketplace comes with comprehensive
+            Every data product in ARC comes with comprehensive
             governance, quality assurance, and compliance built-in.
           </p>
         </div>

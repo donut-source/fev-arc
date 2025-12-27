@@ -149,7 +149,7 @@ const nowIso = () => new Date().toISOString();
 export const mockPeople: MockPerson[] = [
   {
     id: CURRENT_USER_ID,
-    name: 'John Doe',
+    name: 'Warren Durrett',
     title: 'Alternative Data Analyst',
     department: 'Private Equity',
     expertise_areas: ['FX', 'portfolio monitoring', 'data products'],
@@ -401,7 +401,7 @@ export const mockCollections: MockCollection[] = [
     id: '12121212-1212-1212-1212-121212121212',
     name: 'IC Pack – Cross-Border Diligence (Demo)',
     description: 'Core alt-data products for cross-border deal underwriting (FX + comps + company intel).',
-    owner_name: 'John Doe',
+    owner_name: 'Warren Durrett',
     visibility: 'public',
     is_published: true,
     created_at: '2024-09-15T00:00:00.000Z',

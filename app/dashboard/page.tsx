@@ -143,7 +143,7 @@ const teamMembers = [
   },
   {
     id: "3",
-    name: "John Doe",
+    name: "Warren Durrett",
     title: "Alternative Data Analyst",
     department: "Private Equity", 
     email: "john.doe@arc-demo.com",

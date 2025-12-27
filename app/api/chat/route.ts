@@ -155,7 +155,7 @@ NEVER stop after just semanticSearch - always follow through with ALL appropriat
           tools: {
             // 🔍 STEP 1: SEMANTIC SEARCH (MANDATORY FIRST STEP)
             semanticSearch: tool({
-              description: 'Search all content by meaning - people, games, data sources, tools, policies. ALWAYS use this first!',
+              description: 'Search all content by meaning - people, coverage areas, data sources, tools, policies. ALWAYS use this first!',
               inputSchema: z.object({
                 query: z.string().describe('Search query to find relevant content'),
                 limit: z.number().optional().default(10).describe('Maximum number of results'),

@@ -6,7 +6,7 @@ import { mockDataSources } from '@/lib/mock-data';
 export async function GET(request: NextRequest) {
   try {
     if (shouldUseMockData()) {
-      // In ARC, we repurpose "games" as "domains/entities". Provide a lightweight list for demo.
+      // In ARC, we repurpose this route as "coverage areas/entities" for PE alternative data. Provide a lightweight list for demo.
       const uniqueDomains = Array.from(new Set(mockDataSources.map((d) => d.game_title)));
       const data = uniqueDomains.map((name, idx) => ({
         id: `domain-${idx + 1}`,
@@ -78,11 +78,11 @@ export async function GET(request: NextRequest) {
       count: result.length,
     });
   } catch (error) {
-    console.error('Error fetching games:', error);
+    console.error('Error fetching coverage areas:', error);
     return NextResponse.json(
       { 
         success: false, 
-        error: 'Failed to fetch games',
+        error: 'Failed to fetch coverage areas',
         message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }

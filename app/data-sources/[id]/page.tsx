@@ -245,7 +245,7 @@ export default function DataSourceDetailPage() {
             className="mb-6 hover:bg-muted"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Marketplace
+            Back to ARC Catalog
           </Button>
           
           {/* Main Header Card */}

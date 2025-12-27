@@ -6,7 +6,7 @@ import { mockPeople } from '@/lib/mock-data';
 export async function GET(request: NextRequest) {
   try {
     if (shouldUseMockData()) {
-      const person = mockPeople.find((p) => p.name === 'John Doe') || mockPeople[0];
+      const person = mockPeople.find((p) => p.name === 'Warren Durrett') || mockPeople[0];
       return NextResponse.json({
         success: true,
         data: {
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     try {
       const result = await client.query(
         'SELECT * FROM people WHERE name = $1 LIMIT 1',
-        ['John Doe']
+        ['Warren Durrett']
       );
       
       if (result.rows.length > 0) {
@@ -140,13 +140,13 @@ export async function PUT(request: NextRequest) {
     const client = await pool.connect();
     
     try {
-      // Update John Doe's record directly in the database
+      // Update Warren Durrett's record directly in the database
       const result = await client.query(
         `UPDATE people 
          SET name = $1, title = $2, department = $3, expertise_areas = $4, 
              bio = $5, email = $6, years_experience = $7, specializations = $8, 
              updated_at = CURRENT_TIMESTAMP
-         WHERE name = 'John Doe'
+         WHERE name = 'Warren Durrett'
          RETURNING *`,
         [
           name,

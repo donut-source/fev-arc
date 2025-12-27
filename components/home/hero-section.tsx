@@ -35,8 +35,8 @@ export function HeroSection() {
 
           {/* Hero Description */}
           <p className="mx-auto mb-6 sm:mb-8 max-w-2xl text-base sm:text-lg lg:text-xl text-muted-foreground">
-            Discover, validate, and subscribe to governed data products, APIs,
-            and AI models. One marketplace, infinite possibilities.
+            Discover, validate, and subscribe to governed alternative data products, APIs,
+            and AI models for private equity. One catalog, infinite insights.
           </p>
 
           {/* Hero Search */}

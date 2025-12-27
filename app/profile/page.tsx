@@ -51,8 +51,8 @@ interface UserProfile {
 
 const initialProfile: UserProfile = {
   id: "1",
-  name: "John Doe",
-  email: "john.doe@company.com",
+  name: "Warren Durrett",
+  email: "warren.durrett@fevanalytics.com",
   phone: "+1 (555) 123-4567",
   title: "Alternative Data Analyst",
   department: "Private Equity",
