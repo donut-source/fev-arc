@@ -1,10 +1,23 @@
 import { Pool } from 'pg';
+import { shouldUseMockData } from './runtime-config';
 
-// Create a connection pool
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-});
+// Create a connection pool only if we're not in mock mode and have a valid DATABASE_URL
+let pool: Pool | null = null;
+
+function getPool(): Pool {
+  if (shouldUseMockData() || !process.env.DATABASE_URL) {
+    throw new Error('Database not configured - use mock data mode');
+  }
+  
+  if (!pool) {
+    pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    });
+  }
+  
+  return pool;
+}
 
 export interface DataSource {
   id: string;
@@ -139,7 +152,7 @@ export class DatabaseService {
       ORDER BY ds.trust_score DESC, ds.created_at DESC
     `;
 
-    const result = await pool.query(query, params);
+    const result = await getPool().query(query, params);
     return result.rows.map(row => ({
       ...row,
       tech_stack: row.tech_stack || [],
@@ -178,7 +191,7 @@ export class DatabaseService {
 
     query += ` ORDER BY c.updated_at DESC`;
 
-    const result = await pool.query(query, params);
+    const result = await getPool().query(query, params);
     
     // Get data sources for each collection
     const collections = await Promise.all(
@@ -189,7 +202,7 @@ export class DatabaseService {
           JOIN data_sources ds ON cds.data_source_id = ds.id
           WHERE cds.collection_id = $1
         `;
-        const dsResult = await pool.query(dataSourcesQuery, [collection.id]);
+        const dsResult = await getPool().query(dataSourcesQuery, [collection.id]);
         
         return {
           ...collection,
@@ -208,7 +221,7 @@ export class DatabaseService {
       ORDER BY name
     `;
     
-    const result = await pool.query(query);
+    const result = await getPool().query(query);
     return result.rows;
   }
 
@@ -219,7 +232,7 @@ export class DatabaseService {
       ORDER BY category
     `;
     
-    const result = await pool.query(query);
+    const result = await getPool().query(query);
     return result.rows.map(row => row.category);
   }
 
@@ -230,9 +243,14 @@ export class DatabaseService {
       ORDER BY name
     `;
     
-    const result = await pool.query(query);
+    const result = await getPool().query(query);
     return result.rows;
   }
 }
 
-export default pool;
+// Export a getter function instead of the pool directly
+export default {
+  query: (...args: Parameters<Pool['query']>) => getPool().query(...args),
+  connect: () => getPool().connect(),
+  end: () => pool?.end(),
+};
