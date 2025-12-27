@@ -614,10 +614,10 @@ export default function DataSourceDetailPage() {
                   <div>
                     <h4 className="font-semibold mb-2 text-sm text-muted-foreground">Primary Use Cases</h4>
                     <ul className="text-sm space-y-1">
-                      <li>• Player retention analysis and churn prediction</li>
-                      <li>• Game balance optimization and A/B testing</li>
-                      <li>• Revenue forecasting and monetization strategies</li>
-                      <li>• Real-time dashboards and operational monitoring</li>
+                      <li>• Cross-border deal valuation and FX hedging analysis</li>
+                      <li>• Portfolio company monitoring and performance tracking</li>
+                      <li>• Due diligence and market intelligence for acquisitions</li>
+                      <li>• Investment committee memos and board reporting</li>
                     </ul>
                   </div>
                 </CardContent>
