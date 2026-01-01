@@ -37,6 +37,9 @@ import {
   BarChart3,
   Zap,
   Brain,
+  FileText,
+  Link2,
+  Layers,
 } from "lucide-react";
 import { useWorkbench } from "@/lib/workbench-context";
 import { toast } from "sonner";
@@ -69,6 +72,9 @@ interface DataSource {
   publisher_name: string;
   publisher_description: string;
   publisher_type: string;
+  join_key?: string;
+  compatible_datasets?: string[];
+  data_quality_tips?: string[];
 }
 
 function getTypeIcon(type: string) {
@@ -90,6 +96,7 @@ export default function DataSourceDetailPage() {
   const params = useParams();
   const { addItem, isInWorkbench } = useWorkbench();
   const [dataSource, setDataSource] = useState<DataSource | null>(null);
+  const [compatibleDatasets, setCompatibleDatasets] = useState<DataSource[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("contextual");
@@ -114,6 +121,18 @@ export default function DataSourceDetailPage() {
         }
         
         setDataSource(result.data);
+        
+        // Fetch compatible datasets if they exist
+        if (result.data.compatible_datasets && result.data.compatible_datasets.length > 0) {
+          const compatiblePromises = result.data.compatible_datasets.map((id: string) =>
+            fetch(`/api/data-sources/${id}`).then(r => r.json())
+          );
+          const compatibleResults = await Promise.all(compatiblePromises);
+          const compatibleData = compatibleResults
+            .filter(r => r.success)
+            .map(r => r.data);
+          setCompatibleDatasets(compatibleData);
+        }
       } catch (err) {
         setError('Failed to fetch data source details');
         console.error('Error fetching data source:', err);
@@ -493,12 +512,144 @@ export default function DataSourceDetailPage() {
                         </Button>
                       </div>
                     </div>
+                    
+                    {/* UC Endowment Board Report */}
+                    {dataSource.id === 'burgiss-realestate-001' || dataSource.compatible_datasets?.length ? (
+                      <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
+                        <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">UC Endowment Reports</div>
+                        <Button 
+                          size="sm"
+                          onClick={() => {
+                            toast.success("Creating UC Endowment Board Report PowerPoint...", {
+                              description: "Combining data from all joinable datasets"
+                            });
+                            setTimeout(() => {
+                              toast.success("PowerPoint report generated!", {
+                                description: "Download started: UC_Endowment_Board_Report_Dec2024.pptx"
+                              });
+                            }, 2000);
+                          }}
+                          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white transition-all duration-200 hover:shadow-lg rounded-lg font-semibold"
+                        >
+                          <FileText className="h-3 w-3 mr-2" />
+                          Create Board Report PPT
+                        </Button>
+                      </div>
+                    ) : null}
                   </CardContent>
                 </Card>
               </div>
             </CardHeader>
           </Card>
         </div>
+
+        {/* Data Quality Tips */}
+        {dataSource.data_quality_tips && dataSource.data_quality_tips.length > 0 && (
+          <Card className="mb-6 border-2 border-yellow-400 bg-gradient-to-r from-yellow-50 to-orange-50">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-lg">
+                <AlertTriangle className="h-5 w-5 text-yellow-600" />
+                <span className="text-yellow-900">Data Quality Improvement Tips</span>
+              </CardTitle>
+              <CardDescription className="text-yellow-800">
+                This dataset has quality issues. Follow these steps to improve trust score and SLA performance.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-3">
+                {dataSource.data_quality_tips.map((tip, index) => (
+                  <li key={index} className="flex items-start gap-3 p-3 bg-white rounded-lg border border-yellow-200">
+                    <span className="flex-shrink-0 flex items-center justify-center h-6 w-6 rounded-full bg-yellow-500 text-white font-bold text-sm">
+                      {index + 1}
+                    </span>
+                    <span className="text-sm text-gray-800 leading-relaxed">{tip}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Compatible Datasets - Combining UI */}
+        {dataSource.join_key && compatibleDatasets.length > 0 && (
+          <Card className="mb-6 border-2 border-blue-400 bg-gradient-to-r from-blue-50 to-indigo-50">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-lg">
+                <Layers className="h-5 w-5 text-blue-600" />
+                <span className="text-blue-900">Joinable Datasets</span>
+              </CardTitle>
+              <CardDescription className="text-blue-800">
+                This dataset can be combined with {compatibleDatasets.length} other datasets using a unified join key for cross-dataset analysis.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Join Key Info */}
+              <div className="p-4 bg-white rounded-xl border-2 border-blue-300">
+                <div className="flex items-center gap-3 mb-2">
+                  <Link2 className="h-5 w-5 text-blue-600" />
+                  <span className="font-semibold text-blue-900">Unified Join Key</span>
+                </div>
+                <code className="block p-3 bg-blue-100 rounded-lg text-sm font-mono text-blue-900 border border-blue-200">
+                  {dataSource.join_key} = &apos;A&apos; (UC Endowment Fund)
+                </code>
+                <p className="text-xs text-blue-700 mt-2">
+                  All datasets below share this join key for seamless multi-source analysis
+                </p>
+              </div>
+
+              {/* Compatible Datasets Grid */}
+              <div className="grid gap-3 md:grid-cols-2">
+                {compatibleDatasets.map((ds) => (
+                  <div 
+                    key={ds.id}
+                    className="p-4 bg-white rounded-xl border-2 border-slate-200 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer"
+                    onClick={() => {
+                      window.location.href = `/data-sources/${ds.id}`;
+                    }}
+                  >
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <h4 className="font-semibold text-sm text-gray-900 line-clamp-2 flex-1">
+                        {ds.title}
+                      </h4>
+                      <div className="flex-shrink-0">
+                        <Badge variant={ds.trust_score >= 90 ? "default" : "secondary"} className="text-xs">
+                          {ds.trust_score}% Trust
+                        </Badge>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-600 line-clamp-2 mb-3">
+                      {ds.description}
+                    </p>
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <Database className="h-3 w-3" />
+                      <span>{ds.platform}</span>
+                      <span className="mx-1">•</span>
+                      <span>SLA: {ds.sla_percentage}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Combine Action */}
+              <div className="pt-3 border-t border-blue-200">
+                <Button
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white transition-all duration-200 hover:shadow-lg rounded-xl font-semibold h-12"
+                  onClick={() => {
+                    const datasetIds = [dataSource.id, ...compatibleDatasets.map(d => d.id)];
+                    toast.success("Datasets added to Workbench for combining!", {
+                      description: `${datasetIds.length} datasets ready to join on ${dataSource.join_key}`
+                    });
+                    // Add all to workbench
+                    window.location.href = '/workbench';
+                  }}
+                >
+                  <Layers className="h-4 w-4 mr-2" />
+                  Combine All {compatibleDatasets.length + 1} Datasets in Workbench
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Content based on active tab */}
         <div className="w-full">

@@ -9,7 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Database, Brain, Zap, Plus, Check, Eye, Lock, Unlock } from "lucide-react";
+import { Database, Brain, Zap, Plus, Check, Eye, Lock, Unlock, AlertCircle, TrendingUp } from "lucide-react";
 import { 
   IconBrandSnowflake, 
   IconBrandGoogle, 
@@ -40,6 +40,8 @@ interface DataCardProps {
   teamName: string;
   accessLevel?: 'none' | 'read-only' | 'full';
   onViewDetails?: () => void;
+  slaPercentage?: string;
+  dataQualityTips?: string[];
 }
 
 function getTypeIcon(type: string) {
@@ -132,11 +134,15 @@ export function DataCard({
   teamName,
   accessLevel = 'none',
   onViewDetails,
+  slaPercentage,
+  dataQualityTips,
 }: DataCardProps) {
   const { addItem, removeItem, isInWorkbench } = useWorkbench();
   const IconComponent = getTypeIcon(type);
   const PlatformIcon = getPlatformIcon(platform);
   const inWorkbench = isInWorkbench(id);
+  
+  const hasQualityIssues = trustScore < 75 || (slaPercentage && parseFloat(slaPercentage) < 95);
 
   const handleWorkbenchToggle = () => {
     if (inWorkbench) {
@@ -195,6 +201,39 @@ export function DataCard({
               {genre}
             </Badge>
           </div>
+
+          {/* Data Quality Warning */}
+          {hasQualityIssues && dataQualityTips && dataQualityTips.length > 0 && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-400 cursor-help hover:shadow-md transition-shadow">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-yellow-900 mb-1">Data Quality Issues Detected</p>
+                      <p className="text-xs text-yellow-800">
+                        Trust: {trustScore}% • SLA: {slaPercentage}% • Hover for improvement tips
+                      </p>
+                    </div>
+                    <TrendingUp className="h-4 w-4 text-yellow-600 flex-shrink-0" />
+                  </div>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-md p-4 rounded-xl bg-popover/95 backdrop-blur-sm border shadow-xl">
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold text-foreground mb-2">💡 How to Improve Data Quality:</p>
+                  <ul className="text-xs space-y-2 text-foreground">
+                    {dataQualityTips.map((tip, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="text-primary font-bold">{index + 1}.</span>
+                        <span className="flex-1">{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          )}
 
           {/* Business Description */}
           <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-muted/20 to-background/50 border border-muted/20">

@@ -42,6 +42,8 @@ interface DataSource {
   team_name: string;
   tags: string[];
   tech_stack: string[];
+  sla_percentage?: string;
+  data_quality_tips?: string[];
 }
 
 const productTypes = [
@@ -280,6 +282,8 @@ function MarketplaceContent() {
                 teamName={product.team_name}
                 tags={product.tags || []}
                 accessLevel={userAccess[product.id]?.access_level as 'none' | 'read-only' | 'full' || 'none'}
+                slaPercentage={product.sla_percentage}
+                dataQualityTips={product.data_quality_tips}
                 onViewDetails={() => {
                   window.location.href = `/data-sources/${product.id}`;
                 }}
