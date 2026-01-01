@@ -114,7 +114,19 @@ const SUGGESTED_PROMPTS = [
   },
 ];
 
-export function ChatInterface() {
+interface ChatInterfaceProps {
+  initialDatasets?: Array<{
+    id: string;
+    title: string;
+    type: string;
+    category: string;
+  }>;
+  agentMode?: boolean;
+}
+
+export function ChatInterface({ initialDatasets, agentMode }: ChatInterfaceProps = {}) {
+  const [activeDatasets, setActiveDatasets] = useState<Array<{id: string; title: string; type: string; category: string}>>(initialDatasets || []);
+  
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: '/api/chat',
@@ -127,6 +139,31 @@ export function ChatInterface() {
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { addItem } = useWorkbench();
+  
+  // Load datasets from URL params on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !initialDatasets) {
+      const params = new URLSearchParams(window.location.search);
+      const datasetsParam = params.get('datasets');
+      const agentParam = params.get('agent');
+      if (datasetsParam) {
+        try {
+          const datasets = JSON.parse(decodeURIComponent(datasetsParam));
+          setActiveDatasets(datasets);
+          if (agentParam === 'true' && datasets.length > 0) {
+            // Auto-send initial analysis message
+            setTimeout(() => {
+              const initialPrompt = `Analyze the ${datasets.length} datasets I've combined: ${datasets.map((d: { title: string }) => d.title).join(', ')}. What insights can you provide about this combined data?`;
+              sendMessage({ text: initialPrompt });
+            }, 500);
+          }
+        } catch (e) {
+          console.error('Failed to parse datasets from URL', e);
+        }
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialDatasets]);
 
   // Following AI SDK best practices: Use status to control loading indicator
   // Don't track streaming manually - let the status handle it
@@ -931,14 +968,54 @@ export function ChatInterface() {
                       className="object-contain"
                     />
                   </div>
-                  <h2 className="text-2xl font-bold text-foreground">FEV AI Assistant</h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-2xl font-bold text-foreground">FEV AI Assistant</h2>
+                    {agentMode && (
+                      <Badge variant="default" className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1">
+                        <Brain className="h-3 w-3 mr-1" />
+                        Agent
+                      </Badge>
+                    )}
+                  </div>
                 </div>
+                
+                {/* Active Datasets Display */}
+                {activeDatasets.length > 0 && (
+                  <div className="max-w-3xl mx-auto p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 rounded-2xl border-2 border-blue-300 dark:border-blue-700">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Database className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                      <span className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+                        Active Datasets ({activeDatasets.length})
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {activeDatasets.map((dataset) => (
+                        <Badge 
+                          key={dataset.id} 
+                          variant="outline" 
+                          className="bg-white dark:bg-slate-900 border-blue-400 dark:border-blue-600 text-blue-900 dark:text-blue-100 px-3 py-1.5 text-sm"
+                        >
+                          <Database className="h-3 w-3 mr-1.5" />
+                          {dataset.title}
+                        </Badge>
+                      ))}
+                    </div>
+                    <p className="text-sm text-blue-700 dark:text-blue-300">
+                      Ask natural language questions to analyze these combined datasets
+                    </p>
+                  </div>
+                )}
+                
                 <div>
                   <h1 className="text-5xl font-bold tracking-tight text-foreground mb-4">
-                    How can I help you today?
+                    {activeDatasets.length > 0 
+                      ? `Analyze ${activeDatasets.length} Combined Dataset${activeDatasets.length > 1 ? 's' : ''}`
+                      : 'How can I help you today?'}
                   </h1>
                   <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    Discover alternative data sources, understand governance, request access, and build collections for your private equity analysis
+                    {activeDatasets.length > 0
+                      ? 'Ask questions about your data, find patterns, generate insights, and create visualizations'
+                      : 'Discover alternative data sources, understand governance, request access, and build collections for your private equity analysis'}
                   </p>
                 </div>
               </div>

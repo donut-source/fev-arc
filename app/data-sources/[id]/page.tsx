@@ -513,27 +513,62 @@ export default function DataSourceDetailPage() {
                       </div>
                     </div>
                     
-                    {/* UC Endowment Board Report */}
+                    {/* UC Endowment Board Report & Analytics Agent */}
                     {dataSource.id === 'burgiss-realestate-001' || dataSource.compatible_datasets?.length ? (
                       <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
-                        <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">UC Endowment Reports</div>
-                        <Button 
-                          size="sm"
-                          onClick={() => {
-                            toast.success("Creating UC Endowment Board Report PowerPoint...", {
-                              description: "Combining data from all joinable datasets"
-                            });
-                            setTimeout(() => {
-                              toast.success("PowerPoint report generated!", {
-                                description: "Download started: UC_Endowment_Board_Report_Dec2024.pptx"
+                        <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">UC Endowment Analysis</div>
+                        <div className="space-y-2">
+                          <Button 
+                            size="sm"
+                            onClick={() => {
+                              toast.success("Creating UC Endowment Board Report PowerPoint...", {
+                                description: "Combining data from all joinable datasets"
                               });
-                            }, 2000);
-                          }}
-                          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white transition-all duration-200 hover:shadow-lg rounded-lg font-semibold"
-                        >
-                          <FileText className="h-3 w-3 mr-2" />
-                          Create Board Report PPT
-                        </Button>
+                              setTimeout(() => {
+                                toast.success("PowerPoint report generated!", {
+                                  description: "Download started: UC_Endowment_Board_Report_Dec2024.pptx"
+                                });
+                              }, 2000);
+                            }}
+                            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white transition-all duration-200 hover:shadow-lg rounded-lg font-semibold"
+                          >
+                            <FileText className="h-3 w-3 mr-2" />
+                            Create Board Report PPT
+                          </Button>
+                          
+                          <Button 
+                            size="sm"
+                            onClick={() => {
+                              // Get all compatible datasets
+                              const datasets = [
+                                {
+                                  id: dataSource.id,
+                                  title: dataSource.title,
+                                  type: dataSource.type,
+                                  category: dataSource.category,
+                                },
+                                ...compatibleDatasets.map(ds => ({
+                                  id: ds.id,
+                                  title: ds.title,
+                                  type: ds.type,
+                                  category: ds.category,
+                                }))
+                              ];
+                              
+                              // Navigate to chat with datasets context
+                              const datasetsParam = encodeURIComponent(JSON.stringify(datasets));
+                              window.location.href = `/chat?datasets=${datasetsParam}&agent=true`;
+                              
+                              toast.success("Creating Analytics Agent...", {
+                                description: `Analyzing ${datasets.length} combined datasets with AI`
+                              });
+                            }}
+                            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200 hover:shadow-lg rounded-lg font-semibold"
+                          >
+                            <Brain className="h-3 w-3 mr-2" />
+                            Create Analytics Agent
+                          </Button>
+                        </div>
                       </div>
                     ) : null}
                   </CardContent>
@@ -630,8 +665,8 @@ export default function DataSourceDetailPage() {
                 ))}
               </div>
 
-              {/* Combine Action */}
-              <div className="pt-3 border-t border-blue-200">
+              {/* Combine Actions */}
+              <div className="pt-3 border-t border-blue-200 space-y-2">
                 <Button
                   className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white transition-all duration-200 hover:shadow-lg rounded-xl font-semibold h-12"
                   onClick={() => {
@@ -644,7 +679,40 @@ export default function DataSourceDetailPage() {
                   }}
                 >
                   <Layers className="h-4 w-4 mr-2" />
-                  Combine All {compatibleDatasets.length + 1} Datasets in Workbench
+                  Add to Workbench for Combining
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  className="w-full border-2 border-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950 text-purple-700 dark:text-purple-300 transition-all duration-200 hover:shadow-md rounded-xl font-semibold h-12"
+                  onClick={() => {
+                    // Get all datasets including this one
+                    const datasets = [
+                      {
+                        id: dataSource.id,
+                        title: dataSource.title,
+                        type: dataSource.type,
+                        category: dataSource.category,
+                      },
+                      ...compatibleDatasets.map(ds => ({
+                        id: ds.id,
+                        title: ds.title,
+                        type: ds.type,
+                        category: ds.category,
+                      }))
+                    ];
+                    
+                    // Navigate to chat with datasets context
+                    const datasetsParam = encodeURIComponent(JSON.stringify(datasets));
+                    window.location.href = `/chat?datasets=${datasetsParam}&agent=true`;
+                    
+                    toast.success("Creating Analytics Agent...", {
+                      description: `Ready to analyze ${datasets.length} combined datasets`
+                    });
+                  }}
+                >
+                  <Brain className="h-4 w-4 mr-2" />
+                  Create Analytics Agent from Combined Data
                 </Button>
               </div>
             </CardContent>
