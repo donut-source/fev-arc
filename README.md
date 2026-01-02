@@ -18,18 +18,24 @@ ARC (Alternatives AI Ready Catalog) is a data discovery and governance platform 
 
 ## ✨ Key Features
 
-### 🤖 **FEV AI Assistant**
-ChatGPT-like interface for natural language data discovery:
-- "Do we have FX rate data for cross-border deal modeling?"
-- "Show me valuation comps for SaaS buyouts"
-- "What real estate demand signals do we have?"
+### 🤖 **FEV AI Assistant & Analytics Agent**
+ChatGPT-like interface for natural language data discovery and analysis:
+- **Data Discovery**: "Do we have FX rate data for cross-border deal modeling?"
+- **Find Alternatives**: "Show me valuation comps for SaaS buyouts"
+- **Query Signals**: "What real estate demand signals do we have?"
+- **Create Analytics Agents**: Combine multiple datasets and query them with natural language
+  - Ask: "What properties have the highest Walk Scores?"
+  - Analyze: "Compare Burgiss valuations vs MSCI benchmarks"
+  - Discover: "Find undervalued properties in high-growth neighborhoods"
 
 ### 📊 **Alternative Data Catalog**
 Curated datasets, APIs, ML models for PE analysis:
 - **FX & Macro**: G10 spot/forward curves, hedging cost estimates
 - **Company Intelligence**: Private market profiles, competitive analysis
 - **PE Valuation**: Transaction comps, quality checks, industry benchmarks
-- **Real Estate**: NextDoor activity, WalkScore, neighborhood demand signals
+- **Real Estate**: Burgiss property valuations, WalkScore, CoStar, MSCI benchmarks
+- **Data Quality Indicators**: Trust scores, SLA tracking, quality improvement tips
+- **Joinable Datasets**: Combine datasets with unified join keys (e.g., UC Endowment fund ID)
 
 ### 🔍 **Smart Discovery**
 Find data by:
@@ -38,12 +44,15 @@ Find data by:
 - Data owner, steward, or team
 - Trust score, SLA, compliance requirements
 
-### 🛠️ **Workbench**
-Curate and share data collections:
+### 🛠️ **Workbench & Analytics Agents**
+Curate and share data collections, or create AI agents for analysis:
 - Build diligence packs for IC memos
 - Create portfolio monitoring dashboards
 - Publish collections for team collaboration
+- **Combine datasets** with compatible join keys
+- **Create Analytics Agents** to query combined data with natural language
 - Export to Power BI, Looker, Python, or FEV AI Space
+- Generate board reports (e.g., UC Endowment PowerPoint)
 
 ### 📈 **Insights & Analytics**
 Browse published PE-focused insights:
@@ -196,9 +205,10 @@ fev-arc/
 ## 💡 Usage
 
 ### 1. **Browse the Catalog**
-   - Navigate to **Marketplace** → Browse all alternative data products
+   - Navigate to **ARC Catalog** → Browse all alternative data products
    - Filter by: Coverage, Category, Trust Score, Team
    - View detailed metadata: Owner, Steward, SLA, Tech Stack
+   - **See data quality warnings**: Low-quality datasets show tooltips with improvement tips
 
 ### 2. **Chat with FEV AI Assistant**
    - Click **FEV AI Space** in the navigation
@@ -207,18 +217,35 @@ fev-arc/
      - "Show me company intelligence for SaaS"
      - "Who owns the PE valuation comps?"
 
-### 3. **Build Collections**
+### 3. **Combine Datasets & Create Analytics Agents**
+   **Example: UC Endowment Real Estate Analysis**
+   
+   1. Find **Burgiss Private Real Estate Data** (96% trust score)
+   2. View **Joinable Datasets** section showing 3 compatible datasets:
+      - WalkScore Geographic Intelligence
+      - CoStar Commercial Property Valuations
+      - MSCI Real Estate Index Data
+   3. Click **"Create Analytics Agent from Combined Data"**
+   4. Ask natural language questions:
+      - "What properties have the highest Walk Scores?"
+      - "Compare Burgiss valuations vs MSCI benchmarks for Q4 2024"
+      - "Find properties with declining NOI in low walkability areas"
+      - "Show investment opportunities with below-market valuations"
+   5. **Export results**: Generate UC Endowment Board Report PowerPoint
+
+### 4. **Build Collections**
    - Add data products to **My Workbench**
    - Organize into thematic collections (e.g., "Cross-Border Diligence Pack")
    - Publish collections for team sharing
 
-### 4. **Export Data**
+### 5. **Export Data**
    - Export to **Power BI** for IC dashboards
    - Connect to **Looker** for semantic modeling
    - Use **Python** notebooks for custom analysis
    - Open in **FEV AI Space** for AI-powered insights
+   - Generate **PowerPoint board reports** (e.g., UC Endowment)
 
-### 5. **Explore Insights**
+### 6. **Explore Insights**
    - Browse published analytics (e.g., "UC Endowment RE Valuation")
    - View PE-focused use cases and case studies
    - Filter by industry, strategy, or data type
@@ -227,12 +254,14 @@ fev-arc/
 
 ## 🔐 Security & Governance
 
-- **Trust Scores**: Data quality ratings (0-100%)
+- **Trust Scores**: Data quality ratings (0-100%) with visual indicators
+- **Quality Warnings**: Low-quality datasets (<70% trust) show tooltips with improvement tips
 - **Data Owners**: Clear accountability for each product
 - **Data Stewards**: Governance and access control
-- **SLA Tracking**: Uptime and freshness monitoring
+- **SLA Tracking**: Uptime and freshness monitoring (e.g., 99.8% for high-quality sources)
 - **Access Levels**: Full, Read-only, Request-only
 - **Compliance**: GDPR, SOC2, alternative data regulations
+- **Data Lineage**: Track join keys and dataset relationships for combined analysis
 
 ---
 
@@ -283,11 +312,36 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🆘 Support
+## 🆘 Support & Documentation
 
-- **Documentation**: See [DEPLOYMENT.md](./DEPLOYMENT.md)
+- **Deployment Guide**: See [DEPLOYMENT.md](./DEPLOYMENT.md)
+- **Burgiss Data Demo**: See [BURGISS_DEMO_FEATURES.md](./BURGISS_DEMO_FEATURES.md)
+- **Analytics Agent Workflow**: See [ANALYTICS_AGENT_WORKFLOW.md](./ANALYTICS_AGENT_WORKFLOW.md)
 - **Issues**: [GitHub Issues](https://github.com/donut-source/fev-arc/issues)
 - **Website**: [fevanalytics.com](https://fevanalytics.com/)
+
+---
+
+## 🎥 Demo Features
+
+### **Burgiss Private Real Estate Analysis**
+Experience the full power of ARC with our Burgiss data demo:
+
+1. **Data Quality Discovery**: Find low-quality Burgiss Private Credit data (67% trust) with improvement tips
+2. **Find High-Quality Alternative**: Switch to Burgiss Private Real Estate data (96% trust, 99.8% SLA)
+3. **Combine Multiple Sources**: Join 4 datasets on unified key (`uc_endowment_fund_id = 'A'`):
+   - Burgiss Private Real Estate Data
+   - WalkScore Geographic Intelligence  
+   - CoStar Commercial Property Valuations
+   - MSCI Real Estate Index Data
+4. **Create Analytics Agent**: Launch AI assistant pre-loaded with all 4 datasets
+5. **Natural Language Queries**: Ask questions like:
+   - "What properties have Walk Scores above 80?"
+   - "Compare cap rates to MSCI benchmarks"
+   - "Find undervalued properties in high-growth areas"
+6. **Generate Board Report**: One-click PowerPoint for UC Endowment board presentation
+
+**Live Demo**: [https://arc-fev.com](https://arc-fev.com) → Search "Burgiss"
 
 ---
 
