@@ -34,6 +34,7 @@ import {
   Wrench,
   Shield,
   BarChart3,
+  Bug,
 } from "lucide-react";
 import { useWorkbench } from "@/lib/workbench-context";
 
@@ -99,9 +100,24 @@ export function Header() {
                 </Link>
               </Button>
 
-              <Button 
-                variant="ghost" 
-                asChild 
+              <Button
+                variant="ghost"
+                asChild
+                className={`px-4 py-2 mx-1 rounded-lg font-medium transition-all duration-200 hover:shadow-md ${
+                  pathname === '/pest-control'
+                    ? 'bg-blue-700 text-white shadow-sm hover:bg-blue-600'
+                    : 'hover:bg-accent hover:text-accent-foreground'
+                }`}
+              >
+                <Link href="/pest-control" className="flex items-center space-x-2">
+                  <Bug className="h-4 w-4" />
+                  <span>Pest Control</span>
+                </Link>
+              </Button>
+
+              <Button
+                variant="ghost"
+                asChild
                 className={`px-4 py-2 mx-1 rounded-lg font-medium transition-all duration-200 hover:shadow-md ${
                   pathname === '/marketplace'
                     ? 'bg-blue-700 text-white shadow-sm hover:bg-blue-600'
@@ -255,10 +271,21 @@ export function Header() {
                       <span>Chat</span>
                     </Link>
                     <Link
+                      href="/pest-control"
+                      className={`flex items-center space-x-3 text-base font-medium py-3 px-3 rounded-md transition-all duration-200 hover:shadow-sm ${
+                        pathname === '/pest-control'
+                          ? 'bg-blue-700 text-white'
+                          : 'hover:bg-accent hover:text-accent-foreground'
+                      }`}
+                    >
+                      <Bug className="h-5 w-5" />
+                      <span>Pest Control</span>
+                    </Link>
+                    <Link
                       href="/marketplace"
                       className={`flex items-center space-x-3 text-base font-medium py-3 px-3 rounded-md transition-all duration-200 hover:shadow-sm ${
-                        pathname === '/marketplace' 
-                          ? 'bg-blue-700 text-white' 
+                        pathname === '/marketplace'
+                          ? 'bg-blue-700 text-white'
                           : 'hover:bg-accent hover:text-accent-foreground'
                       }`}
                     >
