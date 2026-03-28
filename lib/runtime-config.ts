@@ -6,11 +6,8 @@ export function shouldUseMockData(): boolean {
   const url = process.env.DATABASE_URL;
   if (!url) return true;
 
-  // Common placeholder from env.example
   if (url.includes('@hostname/')) return true;
   if (url.includes('username:password@hostname')) return true;
 
   return false;
 }
-
-

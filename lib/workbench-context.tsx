@@ -35,17 +35,12 @@ const WorkbenchContext = createContext<WorkbenchContextType | undefined>(undefin
 export function WorkbenchProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<WorkbenchItem[]>([]);
 
-  // Load from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem("data-marketplace-workbench");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        // Convert addedAt strings back to Date objects
-        const itemsWithDates = parsed.map((item: WorkbenchItem & { addedAt: string }) => ({
-          ...item,
-          addedAt: new Date(item.addedAt),
-        }));
+        const itemsWithDates = parsed.map((item: WorkbenchItem & { addedAt: string }) => ({ ...item, addedAt: new Date(item.addedAt) }));
         setItems(itemsWithDates);
       } catch (error) {
         console.error("Failed to load workbench from localStorage:", error);
@@ -53,44 +48,23 @@ export function WorkbenchProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Save to localStorage whenever items change
   useEffect(() => {
     localStorage.setItem("data-marketplace-workbench", JSON.stringify(items));
   }, [items]);
 
   const addItem = (item: Omit<WorkbenchItem, "addedAt">) => {
     setItems((prev) => {
-      // Check if item already exists
-      if (prev.some((existing) => existing.id === item.id)) {
-        return prev;
-      }
+      if (prev.some((existing) => existing.id === item.id)) return prev;
       return [...prev, { ...item, addedAt: new Date() }];
     });
   };
 
-  const removeItem = (id: string) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const clearWorkbench = () => {
-    setItems([]);
-  };
-
-  const isInWorkbench = (id: string) => {
-    return items.some((item) => item.id === id);
-  };
-
-  const value = {
-    items,
-    addItem,
-    removeItem,
-    clearWorkbench,
-    isInWorkbench,
-    itemCount: items.length,
-  };
+  const removeItem = (id: string) => setItems((prev) => prev.filter((item) => item.id !== id));
+  const clearWorkbench = () => setItems([]);
+  const isInWorkbench = (id: string) => items.some((item) => item.id === id);
 
   return (
-    <WorkbenchContext.Provider value={value}>
+    <WorkbenchContext.Provider value={{ items, addItem, removeItem, clearWorkbench, isInWorkbench, itemCount: items.length }}>
       {children}
     </WorkbenchContext.Provider>
   );
@@ -98,8 +72,6 @@ export function WorkbenchProvider({ children }: { children: ReactNode }) {
 
 export function useWorkbench() {
   const context = useContext(WorkbenchContext);
-  if (context === undefined) {
-    throw new Error("useWorkbench must be used within a WorkbenchProvider");
-  }
+  if (context === undefined) throw new Error("useWorkbench must be used within a WorkbenchProvider");
   return context;
 }
